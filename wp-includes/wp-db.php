@@ -242,7 +242,7 @@ class wpdb {
 		'sitecategories', 'registration_log', 'blog_versions' );
 
 	/**
-	 * List of WPolyglott global tables
+	 * List of WPolyglot global tables
 	 *
 	 * @since  3.9.0
 	 * @access private

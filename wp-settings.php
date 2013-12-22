@@ -162,6 +162,10 @@ if ( is_multisite() ) {
 
 if ( is_polyglot() ) {
 	require ABSPATH . WPINC . '/pg-functions.php';
+	require ABSPATH . WPINC . '/pg-class.php';
+
+	$pg = new WPolyglot;
+	$pg->init();
 } elseif ( ! defined( 'WPOLYGLOT' ) ) {
 	define( 'WPOLYGLOT', false );
 }

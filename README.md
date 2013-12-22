@@ -20,3 +20,6 @@ CREATE TABLE IF NOT EXISTS `wp_lang` (
 ```mysql
 ALTER TABLE  `wp_posts` ADD  `lang_ID` INT(11) NOT NULL AFTER  `ID`;
 ```
+
+## Todo
+* Force in pretty permalinks when installing
