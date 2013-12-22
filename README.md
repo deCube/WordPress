@@ -1,5 +1,12 @@
-# Migrations
-## Table: wp_lang
+# WPolyglot
+
+## What is this project all about?
+This projects mission is to make WordPress core multilingual, just by adding a constant in wp-config.php, similar to setting up a multisite installation.
+
+## Migrations
+Currently these steps need to be done manually, eventually they will be taken over by a set-up wizard.
+
+### Table: wp_lang
 ```mysql
 CREATE TABLE IF NOT EXISTS `wp_lang` (
 	`ID` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -9,7 +16,7 @@ CREATE TABLE IF NOT EXISTS `wp_lang` (
 	`created_at` TIMESTAMP
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 ```
-## Table: wp_posts
+### Table: wp_posts
 ```mysql
 ALTER TABLE  `wp_posts` ADD  `lang_ID` INT(11) NOT NULL AFTER  `ID`;
 ```
