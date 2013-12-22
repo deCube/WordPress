@@ -80,6 +80,13 @@ define('WPLANG', '');
  */
 define('WP_DEBUG', false);
 
+/**
+ * Enable WordPress Polyglot
+ *
+ * This'll make your website multilingual, it takes the WPLANG value as default language.
+ */
+define('WPOLYGLOT', true);
+
 /* That's all, stop editing! Happy blogging. */
 
 /** Absolute path to the WordPress directory. */

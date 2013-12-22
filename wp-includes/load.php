@@ -783,3 +783,14 @@ function wp_load_translations_early() {
 
 	$wp_locale = new WP_Locale();
 }
+
+/**
+ * Is WordPress Polyglot enabled
+ *
+ * @since   xpoly
+ *
+ * @return  bool True if enabled, false if not
+ */
+function is_polyglot() {
+	return defined( 'WPOLYGLOT' ) ? boolval( WPOLYGLOT ) : false;
+}

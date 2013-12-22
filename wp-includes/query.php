@@ -1420,6 +1420,7 @@ class WP_Query {
 			, 'sentence'
 			, 'fields'
 			, 'menu_order'
+			, 'lang'
 		);
 
 		foreach ( $keys as $key ) {
@@ -2786,6 +2787,12 @@ class WP_Query {
 			$clauses = $this->meta_query->get_sql( 'post', $wpdb->posts, 'ID', $this );
 			$join .= $clauses['join'];
 			$where .= $clauses['where'];
+		}
+
+		// WPolyglot
+		if ( $q['lang'] ) {
+			$join .= " JOIN $wpdb->lang ON $wpdb->lang.code = '" . $q['lang'] . "'";
+			$where .= " AND $wpdb->lang.ID = $wpdb->posts.lang_ID";
 		}
 
 		// Apply filters on where and join prior to paging so that any

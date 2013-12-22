@@ -160,6 +160,12 @@ if ( is_multisite() ) {
 	require( ABSPATH . WPINC . '/ms-deprecated.php' );
 }
 
+if ( is_polyglot() ) {
+	require ABSPATH . WPINC . '/pg-functions.php';
+} elseif ( ! defined( 'WPOLYGLOT' ) ) {
+	define( 'WPOLYGLOT', false );
+}
+
 // Define constants that rely on the API to obtain the default value.
 // Define must-use plugin directory constants, which may be overridden in the sunrise.php drop-in.
 wp_plugin_directory_constants();

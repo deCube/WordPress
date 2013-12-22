@@ -242,6 +242,16 @@ class wpdb {
 		'sitecategories', 'registration_log', 'blog_versions' );
 
 	/**
+	 * List of WPolyglott global tables
+	 *
+	 * @since  3.9.0
+	 * @access private
+	 * @see wpdb::tables()
+	 * @var array
+	 */
+	var $pg_global_tables = array( 'lang' );
+
+	/**
 	 * WordPress Comments table
 	 *
 	 * @since 1.5.0
@@ -406,6 +416,15 @@ class wpdb {
 	 * @var string
 	 */
 	var $sitemeta;
+
+	/**
+	 * WPolyglot Language table
+	 *
+	 * @since 3.9.0
+	 * @access public
+	 * @var string
+	 */
+	var $lang;
 
 	/**
 	 * Format specifiers for DB columns. Columns not listed here default to %s. Initialized during WP load.
@@ -770,6 +789,8 @@ class wpdb {
 				$tables = array_merge( $this->global_tables, $this->tables );
 				if ( is_multisite() )
 					$tables = array_merge( $tables, $this->ms_global_tables );
+				if ( is_polyglot() )
+					$tables = array_merge( $tables, $this->pg_global_tables );
 				break;
 			case 'blog' :
 				$tables = $this->tables;
@@ -778,9 +799,14 @@ class wpdb {
 				$tables = $this->global_tables;
 				if ( is_multisite() )
 					$tables = array_merge( $tables, $this->ms_global_tables );
+				if ( is_polyglot() )
+					$tables = array_merge( $tables, $this->pg_global_tables );
 				break;
 			case 'ms_global' :
 				$tables = $this->ms_global_tables;
+				break;
+			case 'pg_global' :
+				$tables = $this->pg_global_tables;
 				break;
 			case 'old' :
 				$tables = $this->old_tables;
@@ -795,7 +821,7 @@ class wpdb {
 				$blog_id = $this->blogid;
 			$blog_prefix = $this->get_blog_prefix( $blog_id );
 			$base_prefix = $this->base_prefix;
-			$global_tables = array_merge( $this->global_tables, $this->ms_global_tables );
+			$global_tables = array_merge( $this->global_tables, $this->ms_global_tables, $this->pg_global_tables );
 			foreach ( $tables as $k => $table ) {
 				if ( in_array( $table, $global_tables ) )
 					$tables[ $table ] = $base_prefix . $table;
