@@ -11,4 +11,8 @@
  * Gets current lang of website
  * @return string Lang code of language
  */
-function get_current_lang() {}
+function get_current_lang() {
+	global $wpg;
+
+	return $wpg->getLangCode();
+}

@@ -2790,6 +2790,11 @@ class WP_Query {
 		}
 
 		// WPolyglot
+		if ( ! $q['lang'] && is_polyglot() ) {
+			global $wpg;
+			$q['lang'] = $wpg->getLangCode();
+		}
+
 		if ( $q['lang'] ) {
 			$join .= " JOIN $wpdb->lang ON $wpdb->lang.code = '" . $q['lang'] . "'";
 			$where .= " AND $wpdb->lang.ID = $wpdb->posts.lang_ID";

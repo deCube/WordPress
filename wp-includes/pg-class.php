@@ -7,6 +7,24 @@
  */
 class WPolyglot
 {
+	/**
+	 * Holds lang code for current request
+	 *
+	 * @access private
+	 * @var $langCode
+	 */
+	private $langCode;
+
+	/**
+	 * Gets $langCode
+	 *
+	 * @return string $langCode
+	 */
+	public function getLangCode()
+	{
+		return $this->langCode;
+	}
+
 	public function init()
 	{
 		//check request uri
@@ -24,7 +42,13 @@ class WPolyglot
 		$uri = $_SERVER['REQUEST_URI'];
 		$hasLang = false;
 
+		if (3 == strlen($_SERVER['REQUEST_URI'])) {
+			header( 'Location: http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . '/' );
+			die();
+		}
+
 		$requestParts = explode( '/', trim( $_SERVER['REQUEST_URI'], '/' ) );
+		// die(var_dump($requestParts));
 		$langCode = $requestParts[0];
 
 		//if in reserved names, stop evaluating
@@ -32,7 +56,13 @@ class WPolyglot
 		if (false !== in_array($langCode, $reservedNames)) {
 			return;
 		} else {
-			$hasLang = true;
+			if (2 == strlen($langCode)) {
+				$this->langCode = $langCode;
+
+				//strip langCode from request uri
+				$_SERVER['REQUEST_URI'] = substr($_SERVER['REQUEST_URI'], 3);
+				return;
+			}
 		}
 
 		if ( ! $hasLang ) {
@@ -45,6 +75,11 @@ class WPolyglot
 		}
 	}
 
+	/**
+	 * Tries to retrieve the default language
+	 *
+	 * @return object Wpdb object carrying default language row
+	 */
 	private function getDefaultLang()
 	{
 		global $wpdb;

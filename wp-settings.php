@@ -96,6 +96,17 @@ if ( is_multisite() ) {
 	define( 'MULTISITE', false );
 }
 
+// Initialize WPolyglot if enabled.
+if ( is_polyglot() ) {
+	require ABSPATH . WPINC . '/pg-class.php';
+
+	$wpg = new WPolyglot;
+	$wpg->init();
+	$GLOBALS['wpg'] = $wpg;
+} elseif ( ! defined( 'WPOLYGLOT' ) ) {
+	define( 'WPOLYGLOT', false );
+}
+
 register_shutdown_function( 'shutdown_action_hook' );
 
 // Stop most of WordPress from being loaded if we just want the basics.
@@ -162,12 +173,6 @@ if ( is_multisite() ) {
 
 if ( is_polyglot() ) {
 	require ABSPATH . WPINC . '/pg-functions.php';
-	require ABSPATH . WPINC . '/pg-class.php';
-
-	$pg = new WPolyglot;
-	$pg->init();
-} elseif ( ! defined( 'WPOLYGLOT' ) ) {
-	define( 'WPOLYGLOT', false );
 }
 
 // Define constants that rely on the API to obtain the default value.
