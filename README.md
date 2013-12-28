@@ -22,4 +22,9 @@ ALTER TABLE  `wp_posts` ADD  `lang_ID` INT(11) NOT NULL AFTER  `ID`;
 ```
 
 ## Todo
+* Update permalinks of archives, categories & taxonomies
+* Use correct translation files
+* Create backend interface for post types
+* Create backend interface for custom WPolyglot settings (such as which languages, default language & show comments in current or all language(s))
+* Creating install wizard
 * Force in pretty permalinks when installing
