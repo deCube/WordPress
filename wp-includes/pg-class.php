@@ -8,21 +8,21 @@
 class WPolyglot
 {
 	/**
-	 * Holds lang code for current request
+	 * Holds lang object for current request
 	 *
 	 * @access private
-	 * @var $langCode
+	 * @var $lang
 	 */
-	private $langCode;
+	private $lang;
 
 	/**
-	 * Gets $langCode
+	 * Gets $lang
 	 *
-	 * @return string $langCode
+	 * @return object $lang
 	 */
-	public function getLangCode()
+	public function getLang()
 	{
-		return $this->langCode;
+		return $this->lang;
 	}
 
 	public function init()
@@ -53,11 +53,11 @@ class WPolyglot
 
 		//if in reserved names, stop evaluating
 		$reservedNames = array( 'wp-admin', 'wp-includes', 'wp-content', 'files', 'feed' ); //'page', 'comments', 'blog',
-		if (false !== in_array($langCode, $reservedNames)) {
+		if (false != in_array($langCode, $reservedNames) || preg_match( '|([a-z0-9-]+.php.*)|', $_SERVER['REQUEST_URI'] )) {
 			return;
 		} else {
 			if (2 == strlen($langCode)) {
-				$this->langCode = $langCode;
+				$this->lang = new WP_Lang( $langCode );
 
 				//strip langCode from request uri
 				$_SERVER['REQUEST_URI'] = substr($_SERVER['REQUEST_URI'], 3);
@@ -99,5 +99,67 @@ class WPolyglot
 		}
 
 		return $defaultLang;
+	}
+}
+
+class WP_Lang
+{
+	/**
+	 * Language ID
+	 * @var int
+	 */
+	public $ID;
+	/**
+	 * Language code (ISO 639-1)
+	 * @var string
+	 */
+	public $code;
+	/**
+	 * Native name of language
+	 * @var string
+	 */
+	public $name;
+	/**
+	 * Is this language default?
+	 * @var int
+	 */
+	public $default;
+
+	/**
+	 * Constructor
+	 * @param int/string $lang Language ID or code
+	 */
+	public function __construct( $lang )
+	{
+		if (is_numeric($lang)) {
+			$this->getLanguageById( $lang );
+		} else {
+			$this->getLanguageByCode( $lang );
+		}
+	}
+
+	private function getLanguageById( $lang_ID )
+	{
+		global $wpdb;
+
+		$language = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->lang WHERE id = %d", $lang_ID ) );
+
+		$this->setVars($language);
+	}
+
+	private function getLanguageByCode( $lang_code )
+	{
+		global $wpdb;
+
+		$language = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->lang WHERE code = %s", $lang_code ) );
+
+		$this->setVars($language);
+	}
+
+	private function setVars( $language )
+	{
+		foreach ( $language as $k => $value ) {
+			$this->$k = $value;
+		}
 	}
 }

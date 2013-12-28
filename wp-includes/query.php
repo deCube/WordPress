@@ -2792,7 +2792,7 @@ class WP_Query {
 		// WPolyglot
 		if ( ! $q['lang'] && is_polyglot() ) {
 			global $wpg;
-			$q['lang'] = $wpg->getLangCode();
+			$q['lang'] = $wpg->getLang()->code;
 		}
 
 		if ( $q['lang'] ) {
